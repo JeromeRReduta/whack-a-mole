@@ -1,29 +1,72 @@
 import { useState } from "react";
 import { createContext } from "react";
-
 export const GameContext = createContext();
-const defaultSideLength = 3;
-const numRows = defaultSideLength;
-const numCols = defaultSideLength;
-const initBoard = Array.from({ length: numRows }, () =>
-  Array.from({ length: numCols }, () => 0)
-);
 
 export default function GameProvider({ children }) {
-  const [board, setBoard] = useState(initBoard);
+  const HOLE = 0;
+  const MOLE = 1;
+  const SIDE_LENGTH = 3;
+  const initMolePos = [
+    randomIntInclusiveToExclusive(0, SIDE_LENGTH),
+    randomIntInclusiveToExclusive(0, SIDE_LENGTH),
+  ];
+  const initGrid = createGrid(initMolePos);
 
-  const score = useState(0);
+  const [score, setScore] = useState(0);
+  const [molePos, setMolePos] = useState(initMolePos);
+  const [grid, setGrid] = useState(createGrid(initMolePos));
 
-  const [molePos, setMolePos] = useState([0, 0]);
-  const handleClickMole = () => console.log("You clicked me!");
+  function isMole(data) {
+    return data === MOLE;
+  }
+
+  function isHole(data) {
+    return data === HOLE;
+  }
+
+  function generateMolePos(prevPos) {
+    let newPos = prevPos;
+    while (newPos[0] === prevPos[0] && newPos[1] === prevPos[1]) {
+      const x = randomIntInclusiveToExclusive(0, SIDE_LENGTH),
+        y = randomIntInclusiveToExclusive(0, SIDE_LENGTH);
+      newPos = [x, y];
+    }
+    return newPos;
+  }
+
+  /* logic lovingly taken from https://dougschallmoser.medium.com/javascript-matrix-creation-3222c5113478 */
+  function createGrid(molePos) {
+    const grid = [];
+    for (let i = 0; i < SIDE_LENGTH; i++) {
+      grid[i] = [];
+      for (let j = 0; j < SIDE_LENGTH; j++) {
+        grid[i][j] = HOLE;
+      }
+    }
+    grid[molePos[0]][molePos[1]] = MOLE;
+    return grid;
+  }
+
+  function shuffleGrid() {
+    const newPos = generateMolePos(molePos);
+    setMolePos(newPos);
+    const newGrid = createGrid(molePos);
+    setGrid(newGrid);
+  }
+
+  function randomIntInclusiveToExclusive(min, max) {
+    const range = max - min;
+    return min + Math.floor(Math.random() * range);
+  }
 
   const values = {
-    board,
-    setBoard,
+    score,
+    setScore,
+    grid,
     molePos,
-    setMolePos,
-    handleClickMole,
+    shuffleGrid,
+    isMole,
+    isHole,
   };
-
   return <GameContext.Provider value={values}>{children}</GameContext.Provider>;
 }
