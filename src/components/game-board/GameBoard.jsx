@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { GameContext } from "../../contexts/game-context/GameContext";
 import "../../reset.css";
 import "./game-board.css";
+import ClickMole from "../../use-cases/ClickMole";
 
 export default function GameBoard() {
   const { grid, isMole } = useContext(GameContext);
@@ -22,8 +23,19 @@ export default function GameBoard() {
 }
 
 function Mole() {
+  const { score, setScore, shuffleGrid } = useContext(GameContext);
   return (
-    <div className="mole" onClick={() => console.log("AAA")} id="mole"></div>
+    <div
+      className="mole"
+      onClick={() =>
+        ClickMole({
+          score: score,
+          setScore: setScore,
+          shuffleGrid: shuffleGrid,
+        })
+      }
+      id="mole"
+    ></div>
   );
 }
 

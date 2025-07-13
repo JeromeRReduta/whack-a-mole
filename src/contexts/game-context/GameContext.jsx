@@ -15,6 +15,7 @@ export default function GameProvider({ children }) {
   const [score, setScore] = useState(0);
   const [molePos, setMolePos] = useState(initMolePos);
   const [grid, setGrid] = useState(createGrid(initMolePos));
+  const [gameIsRunning, setGameIsRunning] = useState(false);
 
   function isMole(data) {
     return data === MOLE;
@@ -67,6 +68,8 @@ export default function GameProvider({ children }) {
     shuffleGrid,
     isMole,
     isHole,
+    gameIsRunning,
+    setGameIsRunning,
   };
   return <GameContext.Provider value={values}>{children}</GameContext.Provider>;
 }
