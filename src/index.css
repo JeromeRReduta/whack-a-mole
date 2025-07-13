@@ -1,3 +1,8 @@
+.hole,
+.mole {
+  width: 221px;
+  height: 246px;
+}
 
 .hole {
   background: url("/hole.png") no-repeat center/contain;
@@ -6,4 +11,3 @@
 .mole {
   background-image: url("/mole.png");
 }
-

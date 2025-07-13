@@ -1,5 +1,5 @@
 import GameProvider, { GameContext } from "./contexts/game-context/GameContext";
-import GameBoard from "./game-board/GameBoard";
+import GameBoard from "./components/game-board/GameBoard";
 
 export default function App() {
   return (
