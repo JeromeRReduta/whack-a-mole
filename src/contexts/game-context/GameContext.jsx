@@ -14,7 +14,7 @@ export default function GameProvider({ children }) {
 
   const [score, setScore] = useState(0);
   const [molePos, setMolePos] = useState(initMolePos);
-  const [grid, setGrid] = useState(createGrid(initMolePos));
+  const [grid, setGrid] = useState(initGrid);
   const [gameIsRunning, setGameIsRunning] = useState(false);
 
   function isMole(data) {
@@ -51,7 +51,7 @@ export default function GameProvider({ children }) {
   function shuffleGrid() {
     const newPos = generateMolePos(molePos);
     setMolePos(newPos);
-    const newGrid = createGrid(molePos);
+    const newGrid = createGrid(newPos);
     setGrid(newGrid);
   }
 
